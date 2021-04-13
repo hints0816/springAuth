@@ -1,0 +1,35 @@
+server:
+  port: 8084
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+spring:
+  datasource:
+    username: root
+    password: hints0816
+    url: jdbc:mysql://localhost:3306/blog_db?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  application:
+    name: resource-server
+  thymeleaf:
+    prefix: classpath:/views/
+    suffix: .html
+    cache: false
+
+security:
+  oauth2:
+    client:
+      id: client_1
+      client-secret: 123456
+      access-token-uri: http://localhost:6001/oauth/token
+      user-authorization-uri: http://localhost:6001/oauth/authorize
+    resource:
+      id: resource1
+      jwt:
+        key-uri: http://localhost:6001/users/current
+        key-value: internet_plus

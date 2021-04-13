@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" href="/css/iconfont.css">
+    <link rel="stylesheet" href="/css/demo.css">
+    <script type="text/javascript" src="/js/jquery-1.12.4.min.js"></script>
+    <script src="/css/iconfont.js"></script>
+    <script>
+        var str = localStorage.token;
+        console.log(str);
+
+        $(document).ready(function(){
+            $('#login1').click(function(){
+                var username = getToken();
+                console.log(username);
+            });
+        })
+
+        function getToken(){
+           console.log(window.localStorage.getItem('token'));
+            if(!!localStorage.getItem('token')){
+                return localStorage.getItem('token');
+            }
+
+            return null;
+        }
+    </script>
+</head>
+
+<body class="no-padding">
+<button id="login1">123</button>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" href="/css/iconfont.css">
+    <link rel="stylesheet" href="/css/demo.css">
+    <script type="text/javascript" src="/js/jquery-1.12.4.min.js"></script>
+    <script src="/css/iconfont.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#error-info").hide();
+
+            $('#loginOut').click(function(){
+                var username = $('#username').val();
+                var password = $('#password').val();
+                if (username == "" || password == "") {
+                    $("#error-msg").html("");
+                    $("#error-msg").append("请输入微博帐号");
+                    $("#error-info").show();
+                    return;
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/oauth/login",
+                    dataType:'json',
+                    data: {
+                        "session[email_or_mobile_number]": username,
+                        "session[password]": password
+                    },
+                    success: function (data) {
+                        $.each(data, function(key, value) {
+                            if (key == "error"){
+                                $("#error-msg").html("");
+                                $("#error-msg").append(value);
+                                $("#error-info").show();
+                            }else{
+                                location.href = 'http://dq18-180686j.it2004.gree.com.cn:8765/oauth/index';
+                            }
+                        })
+                    },
+                    error: function (e) {
+                        console.log(e.responseText);
+                    }
+                });
+            });
+        })
+
+        function closetip(){
+            $("#error-info").hide();
+        }
+    </script>
+</head>
+
+<style>
+    body {
+        margin: 0;
+        background: url("/img/reg_repeat_bg.png?id=1370232467958") repeat-x #bee1f5;
+    }
+
+    body.no-padding {
+        padding: 0!important;
+    }
+
+    a {
+        color: #0a8cd2;
+        text-decoration: none;
+    }
+
+    .sign {
+        height: 100%;
+        min-height: 750px;
+        font-size: 14px;
+    }
+
+    .W_Yahei {
+        font-family: "Microsoft Yahei";
+    }
+
+    .W_nologin .main_radius_bg {
+        width: 900px;
+        margin: 0 auto 15px;
+        background-color: #fff;
+        border-radius: 6px;
+        box-shadow: 0px 2px 3px #98b4c4;
+        -moz-box-shadow: 0px 2px 3px #98b4c4;
+        -webkit-box-shadow: 0px 2px 3px #98b4c4;
+    }
+
+    .W_nologin_main .main_tab_line {
+        padding: 24px 0 22px 40px;
+    }
+
+    .W_logo_wave {
+        height: 164px;
+        background: url("/img/bg_reg_wave.png") no-repeat center bottom;
+        _background: none;
+    }
+
+    .W_reg_header {
+        width: 900px;
+        margin: 0 auto;
+        padding: 10px 0;
+    }
+
+    .W_nologin_logo_big {
+        width: 200px;
+        height: 72px;
+        margin: 0 auto;
+        margin-top: 26px;
+        background: url("/img/logo_big.png") no-repeat;
+    }
+
+    .B_register .main_radius_bg .W_reg_form {
+        margin: 29px 0 0 20px;
+        padding-bottom: 78px;
+    }
+
+    .B_register .W_nologin_main .W_reg_form {
+        float: left;
+        width: 600px;
+        margin: 30px 0 0 30px;
+        _display: inline;
+    }
+
+    .clearfix {
+        display: block;
+    }
+
+    .clearfix:after {
+        content: "";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+    }
+
+    .W_nologin_main .main_tab_line .cur {
+        border-bottom: 3px solid #ffa00a;
+    }
+
+    .W_nologin_main .main_tab_line a {
+        display: inline-block;
+        font-size: 22px;
+        color: #333;
+        line-height: 33px;
+    }
+
+    .W_nologin_main .main_tab_line .vline {
+        margin: 0 19px;
+        color: #999;
+    }
+    
+    .W_reg_form .info_list {
+        margin: 0 0 15px;
+        position: relative;
+    }
+</style>
+
+<body class="no-padding B_register">
+
+<div class="sign">
+    <div class="W_nologin">
+        <div class="W_reg_header W_logo_wave">
+            <div class="W_nologin_logo_big"></div>
+        </div>
+        <div class="W_nologin_main main_radius_bg">
+            <div class="main_tab_line">
+                <a class="W_f22 W_Yahei cur" href="javascript:void(0);">个人注册</a>
+                <span class="vline">|</span>
+                <a class="W_f22 W_Yahei" href="http://e.weibo.com/register/register">官方注册</a>
+            </div>
+            <div class="W_reg_info clearfix" id="pl_account_regmobile">
+                <div class="W_reg_form">
+                    <div class="info_list clearfix">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

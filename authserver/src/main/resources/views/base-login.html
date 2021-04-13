@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" href="/css/iconfont.css">
+    <link rel="stylesheet" href="/css/demo.css">
+    <script type="text/javascript" src="/js/jquery-1.12.4.min.js"></script>
+    <script src="/css/iconfont.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#error-info").hide();
+            $('#loginOut').click(function(){
+                var username = $('#username').val();
+                var password = $('#password').val();
+                if (username == "" || password == "") {
+                    $("#error-msg").html("");
+                    $("#error-msg").append("请输入微博帐号");
+                    $("#error-info").show();
+                    return;
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/oauth/login",
+                    dataType:'json',
+                    data: {
+                        "username": username,
+                        "password": password
+                    },
+                    success: function (data) {
+                        $.each(data, function(key, value) {
+                            if (key == "error"){
+                                $("#error-msg").html("");
+                                $("#error-msg").append(value);
+                                $("#error-info").show();
+                            }else{
+                                window.location.href=value;
+                            }
+                        })
+                    },
+                });
+            });
+        })
+
+        function closetip(){
+            $("#error-info").hide();
+        }
+    </script>
+</head>
+
+<style>
+    body {
+        margin: 0;
+        background-color: #f1f1f1;
+    }
+
+    body a{
+        color: #1582bd;
+    }
+
+    body.no-padding {
+        padding: 0!important;
+    }
+
+    .sign {
+        height: 100%;
+        min-height: 750px;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .login-container {
+        margin: 0 auto;
+        width: 70%;
+        max-width: 580px;
+        min-width: 465px;
+    }
+
+    .form-container {
+        border-radius: 4px;
+        margin: 0px auto;
+        width: 100%;
+        text-align: center;
+        box-shadow: 1px 1px 10px #888888;
+        height: 250px;
+        padding: 20px 50px 10px;
+        background-color: #fff;
+    }
+
+    .oauth_main_info {
+        margin-top: 0px;
+        margin-bottom: 27px;
+        text-align: left;
+    }
+
+    .btn {
+        width: 80%;
+        height: 35px;
+        line-height: 35px;
+        cursor: pointer;
+        margin-top: 20px;
+        border-radius: 25px;
+        background: #3194d0;
+        color: white;
+        border: none;
+        font-size: 15px;
+    }
+
+    ul {
+        padding-left: 0;
+    }
+
+    .more-sign ul li {
+        margin: 0 8px;
+        display: inline-block;
+    }
+
+    .icon {
+        font-size: 30px;
+    }
+
+    .oauth_tipS_err {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        font-size: 15px;
+    }
+
+    .oauth_sp_txt {
+        color: #ff0000;
+        vertical-align: middle;
+        margin-left: -30px;
+        margin-top: 11px;
+    }
+
+    .tipclose {
+        position: absolute;
+        right: 10px;
+        font-size: 10px;
+    }
+
+    .title a {
+        padding: 10px;
+        color: #969696;
+    }
+
+    a{
+        text-decoration:none;
+    }
+
+    .title b {
+        padding: 10px;
+    }
+
+    .more-sign h6 {
+        position: relative;
+        margin: 0 0 10px;
+        font-size: 12px;
+        color: #b5b5b5;
+    }
+
+    .more-sign h6:before {
+        content: "";
+        border-top: 1px solid #b5b5b5;
+        display: block;
+        position: absolute;
+        width: 60px;
+        top: 8px;
+        left: 30px;
+    }
+
+    .more-sign h6:after {
+        content: "";
+        border-top: 1px solid #b5b5b5;
+        display: block;
+        position: absolute;
+        width: 60px;
+        top: 8px;
+        right: 30px;
+    }
+
+    *, :after, :before {
+        box-sizing: border-box;
+    }
+
+    .input-prepend {
+        position: relative;
+        width: 100%;
+    }
+
+
+    .input-prepend input {
+        width: 100%;
+        height: 40px;
+        margin-bottom: 0;
+        padding: 4px 12px 4px 35px;
+        border: 1px solid #c8c8c8;
+        border-radius: 0 0 4px 4px;
+        background-color: hsla(0,0%,71%,.1);
+        vertical-align: middle;
+    }
+    .no-radius input {
+        border-radius: 0;
+    }
+    .restyle input {
+        border-bottom: none;
+    }
+    .input-prepend i {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 18px;
+        color: #969696;
+    }
+
+    .js-sign-in-container {
+        margin-top: 20px;
+        padding-bottom: 20px;
+        position: relative;
+    }
+
+    .oauth_oauth-tips {
+        position: absolute;
+        width: 225px;
+        line-height: 18px;
+        top: -50px;
+        left: 248px;
+    }
+
+    .oauth_tips_yls {
+        color: #646464;
+        position: absolute;
+        border: 1px solid #d2d2d2;
+        padding: 8px 24px 8px 8px;
+        -moz-box-shadow: 1px 1px 0px #fff inset,2px 4px 0px rgba(0,0,0,0.2);
+        -webkit-box-shadow: 1px 1px 0px #fff inset, 2px 4px 0px rgba(0,0,0,0.2);
+        box-shadow: 1px 1px 0px #fff inset, 2px 4px 0px rgba(0,0,0,0.2);
+        background: #fffcc6;
+    }
+
+    .oauth_tips_yls .arr {
+        position: absolute;
+        height: 12px;
+        width: 22px;
+        overflow: hidden;
+        bottom: -12px;
+        left: 12px;
+        background: url("/img/bg_tips.png") 0 -20px no-repeat;
+    }
+
+    .oauth_tips_yls .arr:before {
+        content: "";
+        bottom: -7px;
+        left: 0;
+        width: 0;
+        height: 0;
+        display: block;
+        border: 7px solid transparent;
+        border-top-color: rgba(0,0,0,0.2);
+        position: absolute;
+    }
+
+    .icon-tishi{
+        color: #db5c21;
+    }
+
+    .icon-guanbi{
+        color: #51504e;
+    }
+
+    .oauth_main_info .app_name {
+        font-weight: 700;
+    }
+
+    .oauth_header .WB_logo {
+        float: left;
+    }
+
+    .oauth_header .login_account {
+        margin-top: 30px;
+        float: right;
+        font-size: 12px;
+        color: #969696;
+    }
+
+    .oauth_header .login_account .sign_up_link, .oauth_header .login_account .special_login_link {
+        color: #1885bc;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .oauth_header .login_account .vline_login {
+        margin: 0 8px;
+        font-size: 14px;
+    }
+
+    .clearfix:after {
+        display: table;
+        clear: both;
+        content: "";
+    }
+    .WB_logo {
+        margin: 10px 0px 0px 0px;
+        padding: 0;
+        width: 140px;
+        height: 44px;
+        background: url("/img/wb_logo.png");
+        _background-image: url("/img/wb_logo.png");
+        overflow: hidden;
+    }
+
+</style>
+
+<body class="no-padding">
+
+<div class="sign">
+    <div class="login-container">
+        <div class="oauth_header clearfix">
+            <h1 class="WB_logo" title="微博">
+                <a id="weibo" href="http://dq18-180686j.it2004.gree.com.cn:6001/oauth/login1" style="color: #333333">
+                </a>
+            </h1>
+            <p class="login_account">
+                <a href="###" class="special_login_link" node-type="loginswitch">二维码登录</a>
+                <span class="vline vline_login">|</span>
+                <a class="sign_up_link" href="/oauth/register" target="_blank">注册</a>
+            </p>
+        </div>
+        <div class="form-container">
+            <p class="oauth_main_info">
+                使用你的微博账号访问
+                <a th:text="${client_name}" class="app_name" href="http://localhost:8765/oauth/index"></a>
+                ,并同时登录微博
+            </p>
+            <div class="js-sign-in-container">
+                <div class="oauth_tips_yls oauth_oauth-tips" id="error-info">
+                    <span class="oauth_tipS_err icon iconfont icon-tishi"></span>
+                    <span class="oauth_sp_txt" id="error-msg">1232123213213</span>
+                    <span class="arr"></span>
+                    <a id="close-tip" href="javascript:;" onclick="closetip()"><span class="tipclose iconfont icon-guanbi"></span></a>
+                </div>
+                <form name="loginForm" method="post" action="/oauth/login">
+                    <div class="input-prepend restyle js-normal">
+                        <input placeholder="手机号或邮箱" type="text" name="username" id="username" style="outline:none;border-bottom: none;border-radius: 4px 4px 0 0;">
+                        <i class="icon iconfont icon-yonghu"></i>
+                    </div>
+                    <div class="input-prepend">
+                        <input placeholder="密码" type="password" name="password" id="password" style="outline:none">
+                        <i class="icon iconfont icon-mima"></i>
+                    </div>
+                </form>
+                <button class="btn" id="loginOut">登&nbsp; 录</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

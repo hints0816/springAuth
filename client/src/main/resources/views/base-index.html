@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" href="/css/iconfont.css">
+    <link rel="stylesheet" href="/css/demo.css">
+    <script type="text/javascript" src="/js/jquery-1.12.4.min.js"></script>
+    <script src="/css/iconfont.js"></script>
+    <!--<script type="text/javascript"  src="/js/auth.js"></script>-->
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var skey = getCookie("Authorization");
+            console.log(skey);
+        });
+        function getCookie(cookieName){
+            var cookieValue="";
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i];
+                    if (cookie.substring(0, cookieName.length + 2).trim() == cookieName.trim() + "=") {
+                        cookieValue = cookie.substring(cookieName.length + 2, cookie.length);
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+    </script>
+</head>
+
+<style>
+
+</style>
+<body class="no-padding">
+<div class="container">
+    1233
+<h3 th:text="${clientId}"></h3>
+    <a id="login" href="http://dq18-180686j.it2004.gree.com.cn:8765/oauth/login" style="color: #333333">登录</a>
+    <a id="login" href="http://dq18-180686j.it2004.gree.com.cn:8765/oauth/login" style="color: #333333">获取</a>
+</div>
+</body>
+</html>

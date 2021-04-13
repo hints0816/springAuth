@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" href="/css/iconfont.css">
+    <script type="text/javascript" src="/js/jquery-1.12.4.min.js"></script>
+    <link rel="stylesheet" href="/css/demo.css">
+    <script src="/css/iconfont.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#error-info").hide();
+            $('#loginOut').click(function(){
+                var username = $('#username').val();
+                var password = $('#password').val();
+                if (username == "" || password == "") {
+                    $("#error-msg").html("");
+                    $("#error-msg").append("请输入微博帐号");
+                    $("#error-info").show();
+                    return;
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "http://dq18-180686j.it2004.gree.com.cn/6001/oauth/login",
+                    dataType:'json',
+                    data: {
+                        "session[email_or_mobile_number]": username,
+                        "session[password]": password
+                    },
+                    success: function (data) {
+                        $.each(data, function(key, value) {
+                            if (key == "error"){
+                                $("#error-msg").html("");
+                                $("#error-msg").append(value);
+                                $("#error-info").show();
+                            }else{
+                                window.location.href=value;
+                            }
+                        })
+                    },
+                });
+            });
+        })
+
+        function closetip(){
+            $("#error-info").hide();
+        }
+    </script>
+</head>
+
+<style>
+    body {
+        margin: 0;
+    }
+
+    body.no-padding {
+        padding: 0!important;
+    }
+
+    .sign {
+        height: 100%;
+        min-height: 750px;
+        text-align: center;
+        font-size: 14px;
+        background-color: #f1f1f1;
+    }
+
+    .login-container {
+        padding: 50px;
+        width: 100%;
+    }
+
+    .form-container {
+        border-radius: 4px;
+        margin: 0px auto;
+        width: 50%;
+        max-width: 400px;
+        text-align: center;
+        box-shadow: 1px 1px 10px #888888;
+        height: 400px;
+        padding: 30px 40px 10px;
+        background-color: #fff;
+    }
+
+    .btn {
+        width: 80%;
+        height: 35px;
+        line-height: 35px;
+        cursor: pointer;
+        margin-top: 20px;
+        border-radius: 25px;
+        background: #3194d0;
+        color: white;
+        border: none;
+        font-size: 15px;
+    }
+
+    .title{
+        font-size: 18px;
+        color: #6B3B4C;
+    }
+
+    .more-sign{
+        margin-top: 40px;
+    }
+
+    ul {
+        padding-left: 0;
+    }
+
+    .more-sign ul li {
+        margin: 0 8px;
+        display: inline-block;
+    }
+
+    .icon{
+        font-size: 30px;
+    }
+
+
+
+    .title a {
+        padding: 10px;
+        color: #969696;
+    }
+
+    a{
+        text-decoration:none;
+    }
+
+    .active {
+        font-weight: 700;
+
+        border-bottom: 2px solid #ea6f5a;
+    }
+
+    .title b {
+        padding: 10px;
+    }
+
+    .more-sign h6 {
+        position: relative;
+        margin: 0 0 10px;
+        font-size: 12px;
+        color: #b5b5b5;
+    }
+
+    .more-sign h6:before {
+        content: "";
+        border-top: 1px solid #b5b5b5;
+        display: block;
+        position: absolute;
+        width: 60px;
+        top: 8px;
+        left: 30px;
+    }
+
+    .more-sign h6:after {
+        content: "";
+        border-top: 1px solid #b5b5b5;
+        display: block;
+        position: absolute;
+        width: 60px;
+        top: 8px;
+        right: 30px;
+    }
+
+    *, :after, :before {
+        box-sizing: border-box;
+    }
+
+    .input-prepend {
+        position: relative;
+        width: 100%;
+    }
+
+
+    .input-prepend input {
+        width: 100%;
+        height: 50px;
+        margin-bottom: 0;
+        padding: 4px 12px 4px 35px;
+        border: 1px solid #c8c8c8;
+        border-radius: 0 0 4px 4px;
+        background-color: hsla(0,0%,71%,.1);
+        vertical-align: middle;
+    }
+    .no-radius input {
+        border-radius: 0;
+    }
+    .restyle input {
+        border-bottom: none;
+    }
+    .input-prepend i {
+        position: absolute;
+        top: 14px;
+        left: 10px;
+        font-size: 18px;
+        color: #969696;
+    }
+
+    .icon-weibo:hover{
+        color: #e05244;
+    }
+    .icon-weixin:hover{
+        color: #00bb29;
+    }
+    .icon-icon:hover{
+        color: #498ad5;
+    }
+</style>
+<body class="no-padding">
+<div class="sign">
+    <div class="login-container">
+        <div class="form-container">
+            <h4 class="title">
+                <div class="normal-title">
+                    <a class="active" href="/oauth/login" style=" color: #ea6f5a;">登录</a>
+                    <b>·</b>
+                    <a id="js-sign-up-btn" class="" href="/oauth/register">注册</a>
+                </div>
+            </h4>
+            <div class="js-sign-in-container">
+                <form name="loginForm" method="post" action="####">
+                    <div class="input-prepend restyle js-normal">
+                        <input placeholder="手机号或邮箱" type="text" name="session[email_or_mobile_number]" id="username" style="outline:none;border-bottom: none;border-radius: 4px 4px 0 0;">
+                        <i class="icon iconfont icon-yonghu"></i>
+                    </div>
+                    <div class="input-prepend">
+                        <input placeholder="密码" type="password" name="session[password]" id="password" style="outline:none">
+                        <i class="icon iconfont icon-mima"></i>
+                    </div>
+                </form>
+                <button class="btn" id="loginOut">登&nbsp; 录</button>
+                <div class="more-sign">
+                    <h6>社交账号登录</h6>
+                    <ul>
+                        <li><a id="weibo" href="/requestServerCode" style="color: #333333"><span class="icon iconfont icon-weibo"></span></a></li>
+                        <li><a id="weixin" href="#" style="color: #333333"><i class="icon iconfont icon-weixin"></i></a></li>
+                        <li><a id="tecent" href="#" style="color: #333333"><span class="icon iconfont icon-icon"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

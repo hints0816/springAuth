@@ -1,0 +1,31 @@
+server:
+  port: 6001
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+spring:
+  datasource:
+    username: hints
+    password: hints0816
+    url: jdbc:mysql://47.119.167.128:3306/art_db?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  application:
+    name: auth-server
+  thymeleaf:
+    prefix: classpath:/views/
+    suffix: .html
+    cache: false
+  redis:
+    host: 47.119.167.128
+    database: 0
+    password: hints0816
+    port: 6379
+
+management:
+  endpoint:
+    health:
+      enabled: true
