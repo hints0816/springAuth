@@ -1,6 +1,6 @@
 const FULL_CHARTER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopgrstuvwxyz';
 const oauth_server='http://localhost:9000/server';
-const redirect_uri='http://localhost:8002/client-front/';
+const redirect_uri='http://localhost:8002/resource-front/';
 const client_id='demo';
 const client_secret='demo';
 const token_storage = localStorage;//sessionStorage

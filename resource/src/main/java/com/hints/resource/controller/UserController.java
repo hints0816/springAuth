@@ -1,7 +1,7 @@
 /*
-package com.hints.clientone.controller;
+package com.hints.resource.controller;
 
-import com.hints.clientone.dao.UserDao;
+import UserDao;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang.StringUtils;

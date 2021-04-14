@@ -1,4 +1,4 @@
-package com.hints.clientone.utils;
+package com.hints.resource.utils;
 
 
 import javax.servlet.http.HttpServletRequest;

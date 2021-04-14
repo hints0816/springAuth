@@ -7,9 +7,9 @@
         <artifactId>artblog</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>clienttwo</artifactId>
+    <artifactId>client</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>clienttwo</name>
+    <name>client</name>
     <description>Demo project for Spring Boot</description>
     <dependencies>
         <dependency>
@@ -29,12 +29,15 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.22</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.nutz</groupId>
             <artifactId>nutz-plugins-spring-boot-starter</artifactId>
             <version>1.r.67</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
         <!--<dependency>
             <groupId>org.springframework.cloud</groupId>

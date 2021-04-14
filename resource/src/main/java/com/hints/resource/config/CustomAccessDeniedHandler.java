@@ -1,6 +1,6 @@
-package com.hints.clientone.config;
+package com.hints.resource.config;
 
-import com.hints.clientone.utils.HTTPUtils;
+import com.hints.resource.utils.HTTPUtils;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;

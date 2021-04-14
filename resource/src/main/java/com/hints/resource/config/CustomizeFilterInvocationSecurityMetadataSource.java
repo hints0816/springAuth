@@ -1,4 +1,4 @@
-package com.hints.clientone.config;
+package com.hints.resource.config;
 
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;

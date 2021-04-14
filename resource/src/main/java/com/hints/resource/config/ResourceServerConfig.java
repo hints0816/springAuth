@@ -1,4 +1,4 @@
-package com.hints.clientone.config;
+package com.hints.resource.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

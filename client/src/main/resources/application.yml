@@ -20,12 +20,17 @@ spring:
     prefix: classpath:/views/
     suffix: .html
     cache: false
+  redis:
+    host: 47.119.167.128
+    database: 0
+    password: hints0816
+    port: 6379
 
 #security:
 #  oauth2:
-#    client:
+#    resource:
 #      id: client_1
-#      client-secret: 123456
+#      resource-secret: 123456
 #      access-token-uri: http://localhost:6001/oauth/token
 #      user-authorization-uri: http://localhost:6001/oauth/authorize
 #    resource:
@@ -40,7 +45,7 @@ spring:
 #
 #practice:
 #  oauth2:
-#    client:
+#    resource:
 #      id: ${security.oauth2.resource.id}
 #      accessTokenUrl: http://localhost:6001/oauth/token
 #      clientId: client_1

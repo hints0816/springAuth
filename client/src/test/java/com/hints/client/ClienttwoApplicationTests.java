@@ -1,10 +1,10 @@
-package com.hints.clienttwo;
+package com.hints.resource;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ClienttwoApplicationTests {
+class clientApplicationTests {
 
     @Test
     void contextLoads() {

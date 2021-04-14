@@ -79,7 +79,7 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
     }
 
     private String clientRedisKey(String clientId) {
-        return "client" + ":" + clientId;
+        return "resource" + ":" + clientId;
     }
 }
 

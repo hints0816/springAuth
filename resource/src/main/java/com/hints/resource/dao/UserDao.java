@@ -1,4 +1,4 @@
-package com.hints.clientone.dao;
+package com.hints.resource.dao;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;

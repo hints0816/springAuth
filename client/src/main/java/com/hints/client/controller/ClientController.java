@@ -1,5 +1,6 @@
-package com.hints.clienttwo.controller;
+package com.hints.client.controller;
 
+import com.hints.client.utils.RedisCache;
 import org.apache.oltu.oauth2.client.OAuthClient;
 import org.apache.oltu.oauth2.client.URLConnectionClient;
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
@@ -26,6 +27,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 public class ClientController {
@@ -36,10 +39,16 @@ public class ClientController {
     String redirectUrl = null;
     String response_type = null;
     String code= null;
-    Logger logger = LoggerFactory.getLogger(LoginController.class);
+    String state= null;
+    Logger logger = LoggerFactory.getLogger(ClientController.class);
 
     @Autowired
     RestTemplate restTemplate;
+
+    @Autowired
+    RedisCache redisCache;
+
+    public static final String STATE_KEY = "state:";
 
     @RequestMapping("/requestServerCode")
     public String requestServerCode(HttpServletRequest request, HttpServletResponse response)
@@ -50,13 +59,19 @@ public class ClientController {
         response_type = "code";
         String requestUrl = null;
         try {
+            String state = UUID.randomUUID().toString().replace("-", "").toLowerCase();
+
             //构建oauth的请求。设置授权服务地址（accessTokenUrl）、clientId、response_type、redirectUrl
             OAuthClientRequest accessTokenRequest = OAuthClientRequest
                     .authorizationLocation(accessTokenUrl)
                     .setResponseType(response_type)
                     .setClientId(clientId)
                     .setRedirectURI(redirectUrl)
+                    .setState(state)
+                    //该build函数内scope设置多个时使用+号分隔
+                    .setScope("getuserinfo+listalbum+uploadpic")
                     .buildQueryMessage();
+            redisCache.setCacheObject(STATE_KEY+state,1,10, TimeUnit.MINUTES);
             requestUrl = accessTokenRequest.getLocationUri();
             System.out.println("获取授权码方法中的requestUrl的值----"+requestUrl);
         } catch (OAuthSystemException e) {
@@ -77,36 +92,40 @@ public class ClientController {
         redirectUrl = "http://localhost:8765/oauth/callbackCode";
         HttpServletRequest httpRequest = (HttpServletRequest)request;
         code = httpRequest.getParameter("code");
-        OAuthClient oAuthClient = new OAuthClient(new URLConnectionClient());
-        try{
-            OAuthClientRequest accessTokenRequest = OAuthClientRequest
-                    .tokenLocation(accessTokenUrl)
-                    .setGrantType(GrantType.AUTHORIZATION_CODE)
-                    .setClientId(clientId)
-                    .setClientSecret(clientSecret)
-                    .setCode(code)
-                    .setRedirectURI(redirectUrl)
-                    .buildQueryMessage();
-            OAuthAccessTokenResponse oAuthResponse = oAuthClient.accessToken(accessTokenRequest, OAuth.HttpMethod.POST);
-            String accessToken = oAuthResponse.getAccessToken();
-            String refreshToken= oAuthResponse.getRefreshToken();
-            Long expiresIn =oAuthResponse.getExpiresIn();
-           /* OAuthClientRequest bearerClientRequest =  new OAuthBearerClientRequest(ConstantKey.OAUTH_CLIENT_GET_RESOURCE)
-                    .setAccessToken(accessToken).buildQueryMessage();
-            OAuthResourceResponse resourceResponse = oAuthClient.resource(bearerClientRequest, OAuth.HttpMethod.GET, OAuthResourceResponse. class );
-            String resBody = resourceResponse.getBody();*/
-            logger.info( "accessToken: " +accessToken + " refreshToken: " +refreshToken + " expiresIn: " +expiresIn );
-            /*return "redirect:http://localhost:8765/oauth/getToken?accessToken="+accessToken;*/
-            Cookie cookies = new Cookie("Authorization", accessToken);
-            cookies.setPath("/");
-            cookies.setMaxAge(31536000);
-            cookies.setHttpOnly(true);
-            response.addCookie(cookies);
-            response.addHeader("Authorization", "Bearer " + accessToken);
-            response.setHeader("Access-Control-Expose-Headers","Authorization");
-            response.sendRedirect("http://localhost:8765/oauth/index");
-        }catch (OAuthSystemException e){
-            e.printStackTrace();
+        state = httpRequest.getParameter("state");
+        if(redisCache.getCacheObject(STATE_KEY+state)!=null) {
+            redisCache.deleteObject(STATE_KEY + state);
+            OAuthClient oAuthClient = new OAuthClient(new URLConnectionClient());
+            try {
+                OAuthClientRequest accessTokenRequest = OAuthClientRequest
+                        .tokenLocation(accessTokenUrl)
+                        .setGrantType(GrantType.AUTHORIZATION_CODE)
+                        .setClientId(clientId)
+                        .setClientSecret(clientSecret)
+                        .setCode(code)
+                        .setRedirectURI(redirectUrl)
+                        .buildQueryMessage();
+                OAuthAccessTokenResponse oAuthResponse = oAuthClient.accessToken(accessTokenRequest, OAuth.HttpMethod.POST);
+                String accessToken = oAuthResponse.getAccessToken();
+                String refreshToken = oAuthResponse.getRefreshToken();
+                Long expiresIn = oAuthResponse.getExpiresIn();
+               /* OAuthClientRequest bearerClientRequest =  new OAuthBearerClientRequest(ConstantKey.OAUTH_CLIENT_GET_RESOURCE)
+                        .setAccessToken(accessToken).buildQueryMessage();
+                OAuthResourceResponse resourceResponse = oAuthClient.resource(bearerClientRequest, OAuth.HttpMethod.GET, OAuthResourceResponse. class );
+                String resBody = resourceResponse.getBody();*/
+                logger.info("accessToken: " + accessToken + " refreshToken: " + refreshToken + " expiresIn: " + expiresIn);
+                /*return "redirect:http://localhost:8765/oauth/getToken?accessToken="+accessToken;*/
+                Cookie cookies = new Cookie("Authorization", accessToken);
+                cookies.setPath("/");
+                cookies.setMaxAge(31536000);
+                cookies.setHttpOnly(true);
+                response.addCookie(cookies);
+                response.addHeader("Authorization", "Bearer " + accessToken);
+                response.setHeader("Access-Control-Expose-Headers", "Authorization");
+                response.sendRedirect("http://localhost:8765/oauth/index");
+            } catch (OAuthSystemException e) {
+                e.printStackTrace();
+            }
         }
     }
 
