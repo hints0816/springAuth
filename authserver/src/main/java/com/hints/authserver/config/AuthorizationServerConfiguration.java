@@ -88,7 +88,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 //重定义授权页面
                 .pathMapping("/oauth/confirm_access", "/custom/confirm_access");
 
-        endpoints.tokenGranter(new CompositeTokenGranter(getTokenGranters(endpoints)));
+        /*endpoints.tokenGranter(new CompositeTokenGranter(getTokenGranters(endpoints)));*/
     }
 
     //目前来说是固定格式

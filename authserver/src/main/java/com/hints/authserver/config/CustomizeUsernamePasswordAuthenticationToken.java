@@ -11,22 +11,22 @@ public class CustomizeUsernamePasswordAuthenticationToken extends AbstractAuthen
     private static final long serialVersionUID = 500L;
     private final Object principal;
     private Object credentials;
-    private Object company;
+    private Object verifycode;
 
 
-    public CustomizeUsernamePasswordAuthenticationToken(Object principal, Object credentials, Object company) {
+    public CustomizeUsernamePasswordAuthenticationToken(Object principal, Object credentials, Object verifycode) {
         super((Collection)null);
         this.principal = principal; //认证信息
         this.credentials = credentials;
-        this.company = company;
+        this.verifycode = verifycode;
         this.setAuthenticated(false);
     }
 
-    public CustomizeUsernamePasswordAuthenticationToken(Object principal, Object credentials, Object company, Collection<? extends GrantedAuthority> authorities) {
+    public CustomizeUsernamePasswordAuthenticationToken(Object principal, Object credentials, Object verifycode, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.principal = principal;
         this.credentials = credentials;
-        this.company = company;
+        this.verifycode = verifycode;
         super.setAuthenticated(true);
     }
 
@@ -38,8 +38,8 @@ public class CustomizeUsernamePasswordAuthenticationToken extends AbstractAuthen
         return this.principal;
     }
 
-    public Object getCompany() {
-        return this.company;
+    public Object getVerifycode() {
+        return this.verifycode;
     }
 
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {

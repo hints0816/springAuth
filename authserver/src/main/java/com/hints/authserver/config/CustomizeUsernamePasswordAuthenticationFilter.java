@@ -1,5 +1,8 @@
 package com.hints.authserver.config;
 
+import com.hints.authserver.constant.SecurityConstants;
+import com.hints.authserver.utils.RedisCache;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -13,11 +16,15 @@ import javax.servlet.http.HttpServletResponse;
 public class CustomizeUsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
     private String usernameParameter = "username";
     private String passwordParameter = "password";
-    private String companyParameter = "company";
+    private String verifycodeParameter = "verifycode";
+    private String uuidParameter = "uuid";
     private boolean postOnly = true;
 
+    @Autowired
+    private RedisCache redisCache;
+
     public CustomizeUsernamePasswordAuthenticationFilter() {
-        super(new AntPathRequestMatcher("/ccc/login", "POST"));
+        super(new AntPathRequestMatcher("/oauth3/login", "POST"));
     }
 
     @Override
@@ -28,7 +35,18 @@ public class CustomizeUsernamePasswordAuthenticationFilter extends AbstractAuthe
         } else {
             String username = this.obtainUsername(request);
             String password = this.obtainPassword(request);
-            String comp = this.obtainComp(request);
+            String verifycode = this.obtainVerifycode(request);
+            String uuid = this.obtainUUID(request);
+            String verifyKey = SecurityConstants.CAPTCHA_CODE_KEY + uuid;
+            String captcha = redisCache.getCacheObject(verifyKey);
+            redisCache.deleteObject(verifyKey);
+            if (captcha == null) {
+                throw new AuthenticationServiceException("error captcha");
+            }
+            if (!verifycode.equalsIgnoreCase(captcha))
+            {
+                throw new AuthenticationServiceException("error captcha");
+            }
             if (username == null) {
                 username = "";
             }
@@ -37,27 +55,35 @@ public class CustomizeUsernamePasswordAuthenticationFilter extends AbstractAuthe
                 password = "";
             }
 
-            if (comp == null) {
-                comp = "";
+            if (verifycode == null) {
+                verifycode = "";
+            }
+
+            if (uuid == null) {
+                uuid = "";
             }
 
             username = username.trim();
-            CustomizeUsernamePasswordAuthenticationToken authRequest = new CustomizeUsernamePasswordAuthenticationToken(username, password, comp);
+            CustomizeUsernamePasswordAuthenticationToken authRequest = new CustomizeUsernamePasswordAuthenticationToken(username, password, verifycode);
             this.setDetails(request, authRequest);
             return this.getAuthenticationManager().authenticate(authRequest);
         }
     }
 
     protected String obtainPassword(HttpServletRequest request) {
-        return request.getParameter(this.usernameParameter);
-    }
-
-    protected String obtainUsername(HttpServletRequest request) {
         return request.getParameter(this.passwordParameter);
     }
 
-    protected String obtainComp(HttpServletRequest request) {
-        return request.getParameter(this.companyParameter);
+    protected String obtainUsername(HttpServletRequest request) {
+        return request.getParameter(this.usernameParameter);
+    }
+
+    protected String obtainVerifycode(HttpServletRequest request) {
+        return request.getParameter(this.verifycodeParameter);
+    }
+
+    protected String obtainUUID(HttpServletRequest request) {
+        return request.getParameter(this.uuidParameter);
     }
 
     protected void setDetails(HttpServletRequest request, CustomizeUsernamePasswordAuthenticationToken authRequest) {
@@ -74,9 +100,9 @@ public class CustomizeUsernamePasswordAuthenticationFilter extends AbstractAuthe
         this.passwordParameter = passwordParameter;
     }
 
-    public void setCompanyParameter(String companyParameter) {
-        Assert.hasText(companyParameter, "Company parameter must not be empty or null");
-        this.companyParameter = companyParameter;
+    public void setVerifycodeParameter(String verifycodeParameter) {
+        Assert.hasText(verifycodeParameter, "verifycode parameter must not be empty or null");
+        this.verifycodeParameter = verifycodeParameter;
     }
 
 
@@ -92,7 +118,7 @@ public class CustomizeUsernamePasswordAuthenticationFilter extends AbstractAuthe
         return this.passwordParameter;
     }
 
-    public final String getCompanyParameter() {
-        return this.companyParameter;
+    public final String getVerifycodeParameter() {
+        return this.verifycodeParameter;
     }
 }

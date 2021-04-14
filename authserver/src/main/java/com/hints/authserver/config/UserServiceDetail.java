@@ -39,7 +39,7 @@ public class UserServiceDetail implements UserDetailsService {
         return userDetails;
     }
 
-    public UserDetails loadUserByUsernameAndCompany(String username,String company) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsernameAndVerifycode(String username,String verifycode) throws UsernameNotFoundException {
         User user = userDao.finduser(username);
         if (user == null) {
             throw new UsernameNotFoundException("用户不存在!");
@@ -48,7 +48,7 @@ public class UserServiceDetail implements UserDetailsService {
                 .password(user.getPassword())
                 .authorities(getAuthorities(username))
                 .build();
-        logger.info("company:"+company);
+        logger.info("verifycode:"+verifycode);
         return userDetails;
     }
 

@@ -18,6 +18,16 @@ public final class SecurityConstants {
     public static final String CACHE_CLIENT_KEY = "oauth_client_details";
 
     /**
+     * 验证码 redis key
+     */
+    public static final String CAPTCHA_CODE_KEY = "captcha_codes:";
+
+    /**
+     * 验证码有效期（分钟）
+     */
+    public static final Integer CAPTCHA_EXPIRATION = 2;
+
+    /**
      * 超级管理员密码
      */
     public static final String ADMINISTRATORS_SECRET = "g2ee_pk23fuck";

@@ -55,4 +55,22 @@ public class Client {
      */
     @Column
     private String resourceId;
+
+    /**
+     * 资源id
+     */
+    @Column
+    private String clientName;
+
+    /**
+     * 资源id
+     */
+    @Column
+    private Integer applicationType;
+
+    /**
+     * 资源id
+     */
+    @Column
+    private String introduction;
 }

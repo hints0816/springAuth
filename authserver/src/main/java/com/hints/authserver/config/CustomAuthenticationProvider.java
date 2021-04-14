@@ -63,13 +63,13 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
         Assert.isInstanceOf(CustomizeUsernamePasswordAuthenticationToken.class, authentication, this.messages.getMessage("AbstractUserDetailsAuthenticationProvider.onlySupports", "Only UsernamePasswordAuthenticationToken is supported"));
         String username = authentication.getPrincipal() == null ? "NONE_PROVIDED" : authentication.getName();
         CustomizeUsernamePasswordAuthenticationToken custoken = (CustomizeUsernamePasswordAuthenticationToken)authentication;
-        String company = custoken.getCompany().toString();
+        String verifycode = custoken.getVerifycode().toString();
         boolean cacheWasUsed = true;
         UserDetails user = this.userCache.getUserFromCache(username);
         if (user == null) {
             cacheWasUsed = false;
             try {
-                user = userServiceDetail.loadUserByUsernameAndCompany(username,company);
+                user = userServiceDetail.loadUserByUsernameAndVerifycode(username,verifycode);
             } catch (UsernameNotFoundException var6) {
                 this.logger.debug("User '" + username + "' not found");
                 if (this.hideUserNotFoundExceptions) {
@@ -91,7 +91,7 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
             }
 
             cacheWasUsed = false;
-            user = retrieveUsers(username, company,(CustomizeUsernamePasswordAuthenticationToken)authentication);
+            user = retrieveUsers(username, verifycode,(CustomizeUsernamePasswordAuthenticationToken)authentication);
             this.preAuthenticationChecks.check(user);
             this.additionalAuthenticationChecks(user, (CustomizeUsernamePasswordAuthenticationToken)authentication);
         }
@@ -109,10 +109,10 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
         return this.createSuccessAuthentication(principalToReturn, authentication, user);
     }
 
-    protected final UserDetails retrieveUsers(String username, String company,CustomizeUsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
+    protected final UserDetails retrieveUsers(String username, String verifycode,CustomizeUsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
         this.prepareTimingAttackProtection();
         try {
-            UserDetails loadedUser = userServiceDetail.loadUserByUsernameAndCompany(username,company);
+            UserDetails loadedUser = userServiceDetail.loadUserByUsernameAndVerifycode(username,verifycode);
             if (loadedUser == null) {
                 throw new InternalAuthenticationServiceException("UserDetailsService returned null, which is an interface contract violation");
             } else {

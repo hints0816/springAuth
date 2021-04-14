@@ -9,23 +9,51 @@
     <script src="/css/iconfont.js"></script>
     <script>
         $(document).ready(function(){
+            var uuid = "";
+            loadCode();
+            function loadCode() { // 声明一个函数
+                $.ajax({
+                    type:'get',
+                    dataType:'json',
+                    url: "/captchaImage",
+                    success: function(data) {
+                        uuid = data.uuid
+                        $("#login-code-img").attr("src","data:image/png;base64,"+data.img);
+                    },
+                    error:function(data){
+                        alert('响应失败！');
+                    }
+                });
+            }
             $("#error-info").hide();
-            $('#loginOut').click(function(){
+            $('#login-code-img').click(function(){
+                loadCode();
+            });
+            $('#loginIn').click(function(){
                 var username = $('#username').val();
                 var password = $('#password').val();
+                var verifycode = $('#verifycode').val();
                 if (username == "" || password == "") {
                     $("#error-msg").html("");
                     $("#error-msg").append("请输入微博帐号");
                     $("#error-info").show();
                     return;
                 }
+                if (verifycode == "") {
+                    $("#error-msg").html("");
+                    $("#error-msg").append("请输入验证码");
+                    $("#error-info").show();
+                    return;
+                }
                 $.ajax({
                     type: "POST",
-                    url: "/oauth/login",
+                    url: "/oauth3/login",
                     dataType:'json',
                     data: {
                         "username": username,
-                        "password": password
+                        "password": password,
+                        "verifycode": verifycode,
+                        "uuid": uuid
                     },
                     success: function (data) {
                         $.each(data, function(key, value) {
@@ -213,6 +241,12 @@
         color: #969696;
     }
 
+    .input-verifycode {
+        position: relative;
+        font-size: 14px;
+        line-height: 36px;
+    }
+
     .js-sign-in-container {
         margin-top: 20px;
         padding-bottom: 20px;
@@ -345,11 +379,25 @@
                         <i class="icon iconfont icon-yonghu"></i>
                     </div>
                     <div class="input-prepend">
-                        <input placeholder="密码" type="password" name="password" id="password" style="outline:none">
+                        <input placeholder="密码" type="password" name="password" id="password" style="outline:none;border-bottom: none;border-radius: 0 0 0 0;">
                         <i class="icon iconfont icon-mima"></i>
                     </div>
+                    <div class="input-verifycode">
+                        <div class="el-input el-input--medium el-input--prefix" style="width: 78%;height: 38px;position: relative;display: inline-block;line-height: 36px;">
+                            <input placeholder="验证码" type="verifycode" name="verifycode" id="verifycode" style="width: 100%; height: 38px; line-height: 36px; outline:none;
+                                padding: 4px 12px 4px 35px;
+                                border: 1px solid #c8c8c8;
+                                border-radius: 0 0 4px 4px;
+                                background-color: hsla(0,0%,71%,.1);
+                                vertical-align: middle;">
+                        </div>
+                        <div class="login-code" style="width: 22%; height: 38px;float: right;">
+                            <img id="login-code-img" alt="Base64 encoded image" style="width: 100%; height: 38px; line-height: 36px;"/>
+                        </div>
+                    </div>
                 </form>
-                <button class="btn" id="loginOut">登&nbsp; 录</button>
+
+                <button class="btn" id="loginIn">登&nbsp; 录</button>
             </div>
         </div>
     </div>
