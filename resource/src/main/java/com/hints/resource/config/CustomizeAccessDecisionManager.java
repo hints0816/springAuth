@@ -8,10 +8,12 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
 
 @Component
 public class CustomizeAccessDecisionManager implements AccessDecisionManager {
@@ -28,8 +30,12 @@ public class CustomizeAccessDecisionManager implements AccessDecisionManager {
                 /*} else
                     return;*/
             }
-            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-
+            OAuth2Authentication oAuth2Authentication = null;
+            if(authentication instanceof OAuth2Authentication){
+                oAuth2Authentication = (OAuth2Authentication)authentication;
+            }
+            Collection<? extends GrantedAuthority> authorities = oAuth2Authentication.getAuthorities();
+            Set<String> scope = oAuth2Authentication.getOAuth2Request().getScope();
             //当前用户所具有的权限
             for (GrantedAuthority authority : authorities) {
                 if (authority.getAuthority().equals("ROLE_ANONYMOUS")) {

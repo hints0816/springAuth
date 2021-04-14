@@ -5,8 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
-/*该类主要是封装用户的认证*/
-
+/*该类主要是封装用户的认证(自定义)*/
 public class CustomizeUsernamePasswordAuthenticationToken extends AbstractAuthenticationToken {
     private static final long serialVersionUID = 500L;
     private final Object principal;

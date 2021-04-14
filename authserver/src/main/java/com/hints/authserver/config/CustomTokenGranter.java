@@ -31,7 +31,6 @@ public class CustomTokenGranter extends AbstractTokenGranter {
         this.authenticationManager = authenticationManager;
     }
 
-
     /**
      * 在这个方法可以进行验证码等其他操作
      * @param client

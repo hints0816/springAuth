@@ -41,12 +41,14 @@ public class CustomizeUsernamePasswordAuthenticationFilter extends AbstractAuthe
             String captcha = redisCache.getCacheObject(verifyKey);
             redisCache.deleteObject(verifyKey);
             if (captcha == null) {
-                throw new AuthenticationServiceException("error captcha");
+                throw new AuthenticationServiceException("null captcha");
             }
+
             if (!verifycode.equalsIgnoreCase(captcha))
             {
                 throw new AuthenticationServiceException("error captcha");
             }
+
             if (username == null) {
                 username = "";
             }

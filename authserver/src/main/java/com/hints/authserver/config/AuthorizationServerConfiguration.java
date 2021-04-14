@@ -88,7 +88,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 //重定义授权页面
                 .pathMapping("/oauth/confirm_access", "/custom/confirm_access");
 
-        /*endpoints.tokenGranter(new CompositeTokenGranter(getTokenGranters(endpoints)));*/
+        endpoints.tokenGranter(new CompositeTokenGranter(getTokenGranters(endpoints)));
     }
 
     //目前来说是固定格式
@@ -129,7 +129,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
             tokenGranters.add(new ResourceOwnerPasswordTokenGranter(authenticationManager, tokenServices,
                     clientDetails, requestFactory));//有了自定义的用户名密码验证方式不需要初始化默认的了
             tokenGranters.add(new CustomTokenGranter(new ProviderManager(getProvider(),null),tokenServices,endpoints.getClientDetailsService(),endpoints.getOAuth2RequestFactory()));
-
         }
         //添加自定义granter
         return tokenGranters;

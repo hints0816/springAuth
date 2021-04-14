@@ -44,6 +44,10 @@ public class CustomOAuth2RequestFactory extends DefaultOAuth2RequestFactory {
         Set<String> scopes = OAuth2Utils.parseParameterList((String)requestParameters.get("scope"));
         ClientDetails clientDetails = this.customClientDetailsService.loadClientByClientId(clientId);
         if (scopes == null || scopes.isEmpty()) {
+            /**
+             * 原：默认scope为client绑定的所有的scope
+             * 设置getuserinfo为默认scope
+             */
             Set<String> newscopes = new HashSet<>();
             newscopes.add("getuserinfo");
             scopes = newscopes;
