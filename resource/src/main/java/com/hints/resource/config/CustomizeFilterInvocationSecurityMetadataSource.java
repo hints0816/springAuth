@@ -21,10 +21,9 @@ public class CustomizeFilterInvocationSecurityMetadataSource implements FilterIn
         //获取请求地址
         String requestUrl = ((FilterInvocation) o).getRequestUrl();
 
-           /* String[] values = new String[1];
-            values[0] = "GSCMAD";
-            return SecurityConfig.createList(values);*/
-        return null;
+        String[] values = new String[1];
+        values[0] = "GSCMAD";
+        return SecurityConfig.createList(values);
         //没有匹配上的资源，都是登录访问
 //        return SecurityConfig.createList("ROLE_LOGIN");
     }

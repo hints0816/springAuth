@@ -65,7 +65,6 @@ public class BaseMainController {
     }
 
     @RequestMapping(value = "/oauth2/authorize")
-    /* @ResponseBody*/
     public ModelAndView oauthLogin(Model model2, @RequestParam("response_type") String response_type,
                                    @RequestParam("redirect_uri") String redirect_uri,
                                    @RequestParam("client_id") String client_id, HttpServletResponse response, HttpServletRequest request){
@@ -73,15 +72,11 @@ public class BaseMainController {
         if(request.getAttribute("error")!=null){
             model.addObject("error",request.getAttribute("error"));
         }
-        HttpSession session = request.getSession();
-        //将数据存储到session中
-        session.setAttribute("data", "hints");
         model.addObject("client_name",userDao.getclientname(client_id));
         return model;
     }
 
     @RequestMapping(value = "/oauth2/login")
-    /* @ResponseBody*/
     public ModelAndView login(HttpServletResponse response, HttpServletRequest request){
         ModelAndView model = new ModelAndView("base-login");
         return model;
@@ -105,7 +100,7 @@ public class BaseMainController {
 
     @DeleteMapping("/logout")
     public void logout(HttpServletRequest request) {
-        Cookie[] cookies =  request.getCookies();
+        /*Cookie[] cookies =  request.getCookies();
         String tokenValue = "";
         if(cookies != null){
             for(Cookie cookie : cookies){
@@ -115,12 +110,6 @@ public class BaseMainController {
             }
         }
         OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
-        tokenStore.removeAccessToken(accessToken);
+        tokenStore.removeAccessToken(accessToken);*/
     }
-
-    @GetMapping("/oauth1/register")
-    public String registerPage1(){
-        return "base-login1";
-    }
-
 }

@@ -1,4 +1,4 @@
-package com.hints.authserver.config;
+package com.hints.authserver.service;
 
 import com.hints.authserver.dao.UserDao;
 import com.hints.authserver.model.Role;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class UserServiceDetail implements UserDetailsService {
@@ -56,12 +55,12 @@ public class UserServiceDetail implements UserDetailsService {
     public Collection<? extends GrantedAuthority> getAuthorities(String username) {
         List<Role> list1 = new ArrayList<>();
         List<Record> list = userDao.getAuth(username);
-        for (Map map : list) {
+        for (Record record : list) {
             Role role = new Role();
-            role.setRole_id(Long.valueOf(map.get("role_id").toString()));
-            role.setRole_name(map.get("role_name").toString());
+            role.setRole_id(Long.valueOf(record.getString("role_id")));
+            role.setRole_name(record.getString("role_name"));
             list1.add(role);
-    }
+        }
         return list1;
     }
 }

@@ -145,8 +145,6 @@ public class ClientController {
         headers.add("Authorization", "Bearer "+code);
         HttpEntity<String> entity = new HttpEntity<String>("parameters",headers);
         ResponseEntity<String> result = restTemplate.exchange("http://localhost:8876/product/1", HttpMethod.GET,entity,String.class);
-
-        String clientname = result.getBody().toString();
         try {
             response.addHeader("Authorization", "Bearer " + code);
             response.sendRedirect("http://localhost:8765/oauth/index");

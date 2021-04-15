@@ -2,6 +2,7 @@ package com.hints.authserver.config;
 
 import com.hints.authserver.handler.AppLoginFailureHandler;
 import com.hints.authserver.handler.SecAuthenticationSuccessHandler;
+import com.hints.authserver.service.UserServiceDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

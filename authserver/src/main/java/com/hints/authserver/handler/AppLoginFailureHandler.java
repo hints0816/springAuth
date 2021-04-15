@@ -3,6 +3,7 @@ package com.hints.authserver.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -37,6 +38,14 @@ public class AppLoginFailureHandler implements AuthenticationFailureHandler {
             String message = "用户名或密码错误";
             request.setAttribute("error",message);
             request.getRequestDispatcher("/oauth2/error").forward(request,response);
+        }
+        if(exception instanceof RuntimeException){
+            AuthenticationServiceException authenticationServiceException = (AuthenticationServiceException)exception;
+            if(authenticationServiceException.getCause().getMessage().equals("error captcha") || authenticationServiceException.getMessage().equals("null captcha")){
+                String message = "验证码错误";
+                request.setAttribute("error",message);
+                request.getRequestDispatcher("/oauth2/error").forward(request,response);
+            }
         }
     }
 }

@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * 用来解决认证过的用户访问无权限资源时的异常
+ */
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
