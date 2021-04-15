@@ -41,7 +41,7 @@ public class AppLoginFailureHandler implements AuthenticationFailureHandler {
         }
         if(exception instanceof RuntimeException){
             AuthenticationServiceException authenticationServiceException = (AuthenticationServiceException)exception;
-            if(authenticationServiceException.getCause().getMessage().equals("error captcha") || authenticationServiceException.getMessage().equals("null captcha")){
+            if(authenticationServiceException.getMessage().equals("error captcha") || authenticationServiceException.getMessage().equals("null captcha")){
                 String message = "验证码错误";
                 request.setAttribute("error",message);
                 request.getRequestDispatcher("/oauth2/error").forward(request,response);
