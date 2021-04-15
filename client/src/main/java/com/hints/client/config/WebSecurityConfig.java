@@ -12,7 +12,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/order/**")
+                .antMatchers("/order/**","/oauth/index")
                 .authenticated(); // 配置order访问控制，必须认证后才可以访问
     }
 }
