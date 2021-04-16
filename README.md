@@ -21,23 +21,23 @@
 
 ### 认证模块
 
-- 自定义Spring Security内登录接口和登录参数。
-- 自定义AuthenticationToken。
+- 自定义`Spring Security`内登录接口和登录参数。
+- 自定义`AuthenticationToken`。
 - 自定义授权码长度。
-- 自定义OAuth2RequestFactory，重写无Scope的默认规则。
-- 自定义TokenGranter，新增授权方式，可与新增的AuthenticationToken绑定。
-- 自定义TokenEnhancer，自定义JWT信息体。
-- 自定义AuthenticationFailureHandler。
-- 自定义AuthenticationSuccessHandler。
-- 自定义customAuthenticationProvider。
+- 自定义`OAuth2RequestFactory`，重写无Scope的默认规则。
+- 自定义`TokenGranter`，新增授权方式，可与新增的AuthenticationToken绑定。
+- 自定义`TokenEnhancer`，自定义JWT信息体。
+- 自定义`AuthenticationFailureHandler`。
+- 自定义`AuthenticationSuccessHandler`。
+- 自定义`customAuthenticationProvider`。
 > provider->providerManager->filter
 > provider->CustomizeUsernamePasswordAuthenticationToken
 - 第三方信息持久化和缓存
 
 ### 资源模块
 
-- 自定义AccessDecisionManager。
-- 自定义FilterInvocationSecurityMetadataSource。
+- 自定义`AccessDecisionManager`。
+- 自定义`FilterInvocationSecurityMetadataSource`。
 - 自定义拒绝策略。
 
 ## 快速启动
