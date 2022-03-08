@@ -69,7 +69,7 @@ public class ClientController {
                     .setRedirectURI(redirectUrl)
                     .setState(state)
                     //该build函数内scope设置多个时使用+号分隔
-                    /*.setScope("getuserinfo")*/
+                    .setScope("getuserinfo1")
                     .buildQueryMessage();
             redisCache.setCacheObject(STATE_KEY+state,1,10, TimeUnit.MINUTES);
             requestUrl = accessTokenRequest.getLocationUri();

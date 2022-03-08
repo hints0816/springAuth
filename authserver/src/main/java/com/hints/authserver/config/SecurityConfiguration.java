@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -57,7 +58,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/css/**", "/icon/**", "/img/**", "/js/**", "/favicon.ico");
+        web.ignoring().antMatchers("/bootstrap/**","/css/**", "/icon/**", "/img/**", "/js/**", "/favicon.ico");
     }
 
     //安全拦截机制,什么时候关闭csrf
@@ -88,7 +89,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     CustomizeUsernamePasswordAuthenticationFilter lindAuthenticationFilter() {
         CustomizeUsernamePasswordAuthenticationFilter customizeUsernamePasswordAuthenticationFilter = new CustomizeUsernamePasswordAuthenticationFilter();
         ProviderManager providerManager =
-                new ProviderManager(Collections.singletonList(customAuthenticationProvider));
+                new ProviderManager(Collections.<AuthenticationProvider>singletonList(customAuthenticationProvider));
         customizeUsernamePasswordAuthenticationFilter.setAuthenticationManager(providerManager);
         customizeUsernamePasswordAuthenticationFilter.setAuthenticationSuccessHandler(secAuthenticationSuccessHandler);
         customizeUsernamePasswordAuthenticationFilter.setAuthenticationFailureHandler(appLoginFailureHandler);

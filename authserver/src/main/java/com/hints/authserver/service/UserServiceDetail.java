@@ -25,7 +25,6 @@ public class UserServiceDetail implements UserDetailsService {
     @Autowired
     private UserDao userDao;
 
-    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userDao.finduser(username);
         if (user == null) {
@@ -53,12 +52,12 @@ public class UserServiceDetail implements UserDetailsService {
 
     //查询该用户的权限集
     public Collection<? extends GrantedAuthority> getAuthorities(String username) {
-        List<Role> list1 = new ArrayList<>();
+        List<Role> list1 = new ArrayList<Role>();
         List<Record> list = userDao.getAuth(username);
         for (Record record : list) {
             Role role = new Role();
             role.setRole_id(Long.valueOf(record.getString("role_id")));
-            role.setRole_name(record.getString("role_name"));
+            role.setRoleName(record.getString("role_name"));
             list1.add(role);
         }
         return list1;

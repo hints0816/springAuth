@@ -12,65 +12,71 @@ public class Client {
      * 客户端id
      */
     @Name
-    private String clientId;
+    private String client_id;
 
     /**
      * 客户端秘钥
      */
-    @Column
+    @Column(hump = true)
     private String clientSecret;
 
     /**
      * 授权码模式
      */
-    @Column
+    @Column(hump = true)
     private String authorizedGrantTypes;
 
     /**
      * 回调地址
      */
-    @Column
+    @Column(hump = true)
     private String redirectUri;
 
     /**
      * TOKEN失效时长（秒）
      */
-    @Column
+    @Column(hump = true)
     private Double accessTokenValiditySeconds;
 
     /**
      * REFRESH_TOKEN失效时长（秒）
      */
-    @Column
+    @Column(hump = true)
     private Double refreshTokenValiditySeconds;
 
     /**
      * 作用域
      */
-    @Column
+    @Column(hump = true)
     private String scopes;
+
+    /**
+     * 是否授权页面
+     */
+    @Column(hump = true)
+    private String autoApproveScopes;
 
     /**
      * 资源id
      */
-    @Column
+    @Column(hump = true)
     private String resourceId;
 
     /**
      * 资源id
      */
-    @Column
+    @Column(hump = true)
     private String clientName;
 
     /**
      * 资源id
      */
-    @Column
+    @Column(hump = true)
     private Integer applicationType;
 
     /**
      * 资源id
      */
-    @Column
+    @Column(hump = true)
     private String introduction;
 }

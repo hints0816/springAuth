@@ -9,11 +9,10 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
 spring:
   datasource:
-    username: hints
-    password: hints0816
-    url: jdbc:mysql://47.119.167.128:3306/art_db?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false
-    type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@10.2.25.123/ggrdattest
+    username: greescmdb2
+    password: passwd
   application:
     name: service-hi
   thymeleaf:
@@ -21,23 +20,17 @@ spring:
     suffix: .html
     cache: false
   redis:
-    host: 47.119.167.128
-    database: 0
-    password: hints0816
+    host: 10.2.24.231
+    database: 12
     port: 6379
 
-#security:
-#  oauth2:
-#    resource:
-#      id: client_1
-#      resource-secret: 123456
-#      access-token-uri: http://localhost:6001/oauth/token
-#      user-authorization-uri: http://localhost:6001/oauth/authorize
-#    resource:
-#      id: resource1
-#      jwt:
-#        key-uri: http://localhost:6001/users/current
-#        key-value: internet_plus
+security:
+  oauth2:
+    client:
+      id: client_3
+      resource-secret: 123456
+      access-token-uri: http://localhost:6001/oauth/token
+      user-authorization-uri: http://localhost:6001/oauth/authorize
 #
 #exampleService:
 #  ribbon:

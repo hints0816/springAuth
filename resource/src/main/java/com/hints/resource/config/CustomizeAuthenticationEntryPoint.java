@@ -15,7 +15,6 @@ import java.io.IOException;
  */
 @Component
 public class CustomizeAuthenticationEntryPoint implements AuthenticationEntryPoint {
-    @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException {
         if (HTTPUtils.isAjaxRequest(httpServletRequest)) {// AJAX请求,使用response发送403
             httpServletResponse.sendError(401);

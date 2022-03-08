@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
-    @Override
+
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse resp, AccessDeniedException e) throws IOException, ServletException {
         if (HTTPUtils.isAjaxRequest(httpServletRequest)) {// AJAX请求,使用response发送403
             resp.sendError(403);

@@ -17,21 +17,28 @@ public class Role implements GrantedAuthority {
     @Id
     private Long role_id;
     /** 角色名称 */
-    @Name
-    private String role_name;
+    @Column(hump = true)
+    private String roleName;
     /** 角色权限 */
-    private String role_key;
+    @Column(hump = true)
+    private String roleKey;
     /** 角色排序 */
-    private String role_sort;
+    @Column(hump = true)
+    private String roleSort;
     /** 数据范围（1：所有数据权限；2：自定义数据权限；3：本部门数据权限；4：本部门及以下数据权限） */
-    private String data_scope;
+    @Column(hump = true)
+    private String dataScope;
     /** 菜单树选择项是否关联显示（ 0：父子不互相关联显示 1：父子互相关联显示） */
-    private boolean menu_check_strictly;
+    @Column(hump = true)
+    private boolean menuCheckStrictly;
     /** 角色状态（0正常 1停用） */
+    @Column(hump = true)
     private String status;
     /** 删除标志（0代表存在 2代表删除） */
-    private String del_flag;
+    @Column(hump = true)
+    private String delFlag;
     /** 用户是否存在此角色标识 默认不存在 */
+    @Column(hump = true)
     private boolean flag = false;
     /** 菜单组 */
     private Long[] menu_ids;

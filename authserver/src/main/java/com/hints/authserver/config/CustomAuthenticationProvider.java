@@ -32,7 +32,7 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
     private UserDetailsChecker postAuthenticationChecks = new CustomAuthenticationProvider.DefaultPostAuthenticationChecks();
     private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
     private volatile String userNotFoundEncodedPassword;
-    private static PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserServiceDetail userServiceDetail;
@@ -40,10 +40,10 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    public CustomAuthenticationProvider(UserDetailsService userDetailsService) {
+    public CustomAuthenticationProvider(UserServiceDetail userServiceDetail1) {
         super();
         // 这个地方一定要对userDetailsService赋值，不然userDetailsService是null (这个坑有点深)
-        setUserDetailsService(userDetailsService);
+        setUserDetailsService(userServiceDetail1);
     }
 
     private void prepareTimingAttackProtection() {
@@ -60,6 +60,7 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
 
     }
 
+    @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         Assert.isInstanceOf(CustomizeUsernamePasswordAuthenticationToken.class, authentication, this.messages.getMessage("AbstractUserDetailsAuthenticationProvider.onlySupports", "Only UsernamePasswordAuthenticationToken is supported"));
         String username = authentication.getPrincipal() == null ? "NONE_PROVIDED" : authentication.getName();
@@ -129,6 +130,7 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
         }
     }
 
+    @Override
     public boolean supports(Class<?> authentication) {
         return CustomizeUsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
     }

@@ -64,6 +64,12 @@ public class BaseMainController {
         }};
     }
 
+    @RequestMapping("/oauth2/setting")
+    public ModelAndView toSetting() {
+        ModelAndView model = new ModelAndView("base-setting");
+        return model;
+    }
+
     @RequestMapping(value = "/oauth2/authorize")
     public ModelAndView oauthLogin(Model model2, @RequestParam("response_type") String response_type,
                                    @RequestParam("redirect_uri") String redirect_uri,

@@ -136,7 +136,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     }
 
     private List<AuthenticationProvider> getProvider(){
-        List<AuthenticationProvider> list=new ArrayList<>();
+        List<AuthenticationProvider> list=new ArrayList<AuthenticationProvider>();
         list.add(customAuthenticationProvider);
         return list;
     }

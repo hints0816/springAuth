@@ -67,13 +67,15 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
         Client client = clientDao.findByClientId(clientId);
         BaseClientDetails baseClientDetails = new BaseClientDetails();
         if (client != null) {
-            baseClientDetails.setClientId(client.getClientId());
+            baseClientDetails.setClientId(client.getClient_id());
             baseClientDetails.setClientSecret(client.getClientSecret());
             baseClientDetails.setAuthorizedGrantTypes(Arrays.asList(client.getAuthorizedGrantTypes().split(",")));
             baseClientDetails.setAccessTokenValiditySeconds(client.getAccessTokenValiditySeconds().intValue());
             baseClientDetails.setRefreshTokenValiditySeconds(client.getRefreshTokenValiditySeconds().intValue());
             baseClientDetails.setScope(Arrays.asList(client.getScopes().split(",")));
-            baseClientDetails.setAutoApproveScopes(Arrays.asList(client.getScopes().split(",")));
+            // 获取是否有授权页面开关
+            baseClientDetails.setAutoApproveScopes(Arrays.asList(client.getAutoApproveScopes()));
+            baseClientDetails.setResourceIds(Arrays.asList(client.getResourceId()));
         }
         return baseClientDetails;
     }

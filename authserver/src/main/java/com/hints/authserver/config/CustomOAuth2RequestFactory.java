@@ -23,6 +23,7 @@ public class CustomOAuth2RequestFactory extends DefaultOAuth2RequestFactory {
         this.customClientDetailsService = clientDetailsService;
     }
 
+    @Override
     public void setSecurityContextAccessor(SecurityContextAccessor securityContextAccessor) {
         this.securityContextAccessor = securityContextAccessor;
     }
@@ -34,7 +35,7 @@ public class CustomOAuth2RequestFactory extends DefaultOAuth2RequestFactory {
         String redirectUri = (String)authorizationParameters.get("redirect_uri");
         Set<String> responseTypes = OAuth2Utils.parseParameterList((String)authorizationParameters.get("response_type"));
         Set<String> scopes = this.extractScopes(authorizationParameters, clientId);
-        AuthorizationRequest request = new AuthorizationRequest(authorizationParameters, Collections.emptyMap(), clientId, scopes, (Set)null, (Collection)null, false, state, redirectUri, responseTypes);
+        AuthorizationRequest request = new AuthorizationRequest(authorizationParameters, Collections.<String, String>emptyMap(), clientId, scopes, (Set)null, (Collection)null, false, state, redirectUri, responseTypes);
         ClientDetails clientDetails = this.customClientDetailsService.loadClientByClientId(clientId);
         request.setResourceIdsAndAuthoritiesFromClientDetails(clientDetails);
         return request;
@@ -48,7 +49,7 @@ public class CustomOAuth2RequestFactory extends DefaultOAuth2RequestFactory {
              * 原：默认scope为client绑定的所有的scope
              * 设置getuserinfo为默认scope
              */
-            Set<String> newscopes = new HashSet<>();
+            Set<String> newscopes = new HashSet<String>();
             newscopes.add("getuserinfo");
             scopes = newscopes;
         }

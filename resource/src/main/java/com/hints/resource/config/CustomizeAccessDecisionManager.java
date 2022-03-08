@@ -18,7 +18,6 @@ import java.util.Set;
 
 @Component
 public class CustomizeAccessDecisionManager implements AccessDecisionManager {
-    @Override
     public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, AuthenticationException {
         Iterator<ConfigAttribute> iterator = collection.iterator();
         while (iterator.hasNext()) {
@@ -47,7 +46,7 @@ public class CustomizeAccessDecisionManager implements AccessDecisionManager {
                 Set<String> scope = oAuth2Authentication.getOAuth2Request().getScope();
                 //当前用户所具有的权限
                 for (GrantedAuthority authority : authorities) {
-                    if(needRole.trim().equals("GSCMAD1")) {
+                    if(needRole.trim().equals("100001")) {
                         return;
                     } else if (authority.getAuthority().equals(needRole)) {
                         return;
@@ -58,12 +57,10 @@ public class CustomizeAccessDecisionManager implements AccessDecisionManager {
         throw new AccessDeniedException("权限不足!");
     }
 
-    @Override
     public boolean supports(ConfigAttribute configAttribute) {
         return true;
     }
 
-    @Override
     public boolean supports(Class<?> aClass) {
         return true;
     }
