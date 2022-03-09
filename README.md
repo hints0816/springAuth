@@ -9,17 +9,17 @@
 
 - 包含`JAVA`客户端开发样例。
 
-  ![Snipaste_2022-03-09_17-43-06](C:\Users\180686\Desktop\Snipaste_2022-03-09_17-43-06.png)
+  ![Snipaste_2022-03-09_17-43-06](..\img\Snipaste_2022-03-09_17-43-06.png)
 
-  ![Snipaste_2022-03-09_17-43-16](C:\Users\180686\Desktop\Snipaste_2022-03-09_17-43-16.png)
+  ![Snipaste_2022-03-09_17-43-16](..\img\Snipaste_2022-03-09_17-43-16.png)
 
-  ![Snipaste_2022-03-09_17-43-32](C:\Users\180686\Desktop\Snipaste_2022-03-09_17-43-32.png)
+  ![Snipaste_2022-03-09_17-43-32](..\img\Snipaste_2022-03-09_17-43-32.png)
 
-  ![Snipaste_2022-03-09_17-44-14](C:\Users\180686\Desktop\Snipaste_2022-03-09_17-44-14.png)
+  ![Snipaste_2022-03-09_17-44-14](..\img\Snipaste_2022-03-09_17-44-14.png)
 
-  ![Snipaste_2022-03-09_17-44-57](C:\Users\180686\Desktop\Snipaste_2022-03-09_17-44-57.png)
+  ![Snipaste_2022-03-09_17-44-57](..\img\Snipaste_2022-03-09_17-44-57.png)
 
-  ![Snipaste_2022-03-09_17-45-27](C:\Users\180686\Desktop\Snipaste_2022-03-09_17-45-27.png)
+  ![Snipaste_2022-03-09_17-45-27](..\img\Snipaste_2022-03-09_17-45-27.png)
 
   
 > 在使用或开发过程中有任何疑问都可[联系我](#联系作者)。
