@@ -23,24 +23,3 @@ spring:
     host: 10.2.24.231
     database: 12
     port: 6379
-
-security:
-  oauth2:
-    client:
-      id: client_3
-      resource-secret: 123456
-      access-token-uri: http://localhost:6001/oauth/token
-      user-authorization-uri: http://localhost:6001/oauth/authorize
-#
-#exampleService:
-#  ribbon:
-#    listOfServers: http://localhost:8084
-#
-#practice:
-#  oauth2:
-#    resource:
-#      id: ${security.oauth2.resource.id}
-#      accessTokenUrl: http://localhost:6001/oauth/token
-#      clientId: client_1
-#      clientSecret: 123456
-#      clientAuthenticationScheme: header

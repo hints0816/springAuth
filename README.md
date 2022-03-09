@@ -4,16 +4,28 @@
 `Auth2Connect` 一款以第三方应用接入的第三方平台
 
 - 支持`JWT`授权码登录模式。
+
 - 自定义多个组件实现验证码登录多模式登录。
+
 - 包含`JAVA`客户端开发样例。
 
-演示地址：http://47.119.167.128:8765/oauth/login
+  ![Snipaste_2022-03-09_17-43-06](C:\Users\180686\Desktop\Snipaste_2022-03-09_17-43-06.png)
 
+  ![Snipaste_2022-03-09_17-43-16](C:\Users\180686\Desktop\Snipaste_2022-03-09_17-43-16.png)
+
+  ![Snipaste_2022-03-09_17-43-32](C:\Users\180686\Desktop\Snipaste_2022-03-09_17-43-32.png)
+
+  ![Snipaste_2022-03-09_17-44-14](C:\Users\180686\Desktop\Snipaste_2022-03-09_17-44-14.png)
+
+  ![Snipaste_2022-03-09_17-44-57](C:\Users\180686\Desktop\Snipaste_2022-03-09_17-44-57.png)
+
+  ![Snipaste_2022-03-09_17-45-27](C:\Users\180686\Desktop\Snipaste_2022-03-09_17-45-27.png)
+
+  
 > 在使用或开发过程中有任何疑问都可[联系我](#联系作者)。
 
 ## 系统架构
 
-- 注册中心：`Spring Eureka`。
 - `Spring Oauth2`整合spring。
 - 安全框架：`Spring Security`。
 - 前端框架：`thymeleaf`。
@@ -42,23 +54,6 @@
 - 自定义`FilterInvocationSecurityMetadataSource`。
 - 自定义拒绝策略。
 
-## 快速启动
-
-```shell
-
-```
-
-### 部署
-
-```shell
-
-```
-
-### 启动客户端
-
-```shell
-
-```
 
 ## 联系作者
 - [1152536969@qq.com](mailto:1152536969@qq.com)

@@ -106,16 +106,6 @@ public class BaseMainController {
 
     @DeleteMapping("/logout")
     public void logout(HttpServletRequest request) {
-        /*Cookie[] cookies =  request.getCookies();
-        String tokenValue = "";
-        if(cookies != null){
-            for(Cookie cookie : cookies){
-                if(cookie.getName().equals("Authorization")){
-                    tokenValue = cookie.getValue();
-                }
-            }
-        }
-        OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
-        tokenStore.removeAccessToken(accessToken);*/
+
     }
 }

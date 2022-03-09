@@ -75,12 +75,16 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
-                .tokenStore(jwtTokenStore) //Token的存储方式为内存
-                .authenticationManager(authenticationManager) //WebSecurity配置好的
-                .userDetailsService(userServiceDetail)//读取用户的验证信息
+                //Token的存储方式为内存
+                .tokenStore(jwtTokenStore)
+                //WebSecurity配置好的
+                .authenticationManager(authenticationManager)
+                //读取用户的验证信息
+                .userDetailsService(userServiceDetail)
                 .authorizationCodeServices(authorizationCodeServices())
                 .requestFactory(customOAuth2RequestFactory);
-        TokenEnhancerChain enhancerChain = new TokenEnhancerChain(); //新建一个令牌增强链(payload)
+        //新建一个令牌增强链(payload)
+        TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
         enhancerChain.setTokenEnhancers(Arrays.asList(JwtTokenEnhancer(), jwtTokenConfig.jwtAccessTokenConverter()));
         endpoints
                 .accessTokenConverter(jwtTokenConfig.jwtAccessTokenConverter())

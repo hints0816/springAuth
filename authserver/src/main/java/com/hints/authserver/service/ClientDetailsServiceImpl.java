@@ -16,6 +16,8 @@ import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Data
@@ -73,6 +75,9 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
             baseClientDetails.setAccessTokenValiditySeconds(client.getAccessTokenValiditySeconds().intValue());
             baseClientDetails.setRefreshTokenValiditySeconds(client.getRefreshTokenValiditySeconds().intValue());
             baseClientDetails.setScope(Arrays.asList(client.getScopes().split(",")));
+            HashSet hs=new HashSet();
+            hs.add(client.getRedirectUri());
+            baseClientDetails.setRegisteredRedirectUri(hs);
             // 获取是否有授权页面开关
             baseClientDetails.setAutoApproveScopes(Arrays.asList(client.getAutoApproveScopes()));
             baseClientDetails.setResourceIds(Arrays.asList(client.getResourceId()));

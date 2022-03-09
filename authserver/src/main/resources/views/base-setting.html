@@ -12,46 +12,155 @@
 <script src="/bootstrap/js/bootstrap.min.js"></script>
 <script src="/bootstrap/js/bootstrap-paginator.min.js"></script>
 <script>
-    let currentPage = 1;
-    let pageSize = 10;
-    $(document).ready(function() {
+    $(document).ready(function () {
         doSearch();
 
-        function doSearch() {
+        $(document).on("click",".customSave",function () {
+            $.ajax({
+                data : JSON.stringify({
+                    "client_id":$('#clientID').val(),
+                    "clientName":$('#clientName').val(),
+                    "clientSecret":$('#clientSecret').val(),
+                    "authorizedGrantTypes":$('#authorizedGrantTypes').val(),
+                    "redirectUri":$('#redirectUri').val(),
+                    "accessTokenValiditySeconds":$('#accessTokenValiditySeconds').val(),
+                    "refreshTokenValiditySeconds":$('#refreshTokenValiditySeconds').val(),
+                    "scopes":$('#scopes').val(),
+                    "autoApproveScopes":$(':radio[name=autoApproveScopes]:checked').val(),
+                    "resourceId":$('#resourceId').val(),
+                    "applicationType":$('#applicationType').val(),
+                    "introduction":$('#introduction').val(),
+                }),
+                type:'PUT',
+                dataType:'json',
+                contentType:"application/json;charset=UTF-8",
+                url: "/oauth2/client/update",
+                success: function(data) {
+                    if(data.code == 200){
+                        doSearch();
+                        alert("SUCCESS");
+                    }
+                },
+                error:function(data){
+                }
+            });
+        });
+
+        $(document).on("click",".preview",function () {
+            var $this = $(this)
+            var client_id = $this.attr("data-json")
             $.ajax({
                 type:'GET',
                 url: "/oauth2/client/list",
                 data: {
+                    "client_id": client_id
                 },
+                success: function(data) {
+                    var tableData = data[0];
+                    $('#clientID').val(tableData.client_id);
+                    $('#clientName').val(tableData.clientName);
+                    $('#clientSecret').val(tableData.clientSecret);
+                    $('#authorizedGrantTypes').val(tableData.authorizedGrantTypes);
+                    $('#redirectUri').val(tableData.redirectUri);
+                    $('#accessTokenValiditySeconds').val(tableData.accessTokenValiditySeconds);
+                    $('#refreshTokenValiditySeconds').val(tableData.refreshTokenValiditySeconds);
+                    $('#scopes').val(tableData.scopes);
+                    if(tableData.autoApproveScopes == "0"){
+                        $('#autoApproveScopes1').prop("checked",true);
+                    }else{
+                        $('#autoApproveScopes2').prop("checked",true);
+                    }
+                    $('#resourceId').val(tableData.resourceId);
+                    $('#applicationType').val(tableData.applicationType);
+                    $('#introduction').val(tableData.introduction);
+                },
+                error:function(data){
+                }
+            });
+        });
+
+        $(document).on("click",".delete",function () {
+            var $this = $(this)
+            var client_id = $this.attr("data-json")
+            $.ajax({
+                type:'DELETE',
+                url: "/oauth2/client/del?client_id="+client_id,
+                data: {
+                },
+                success: function(data) {
+                    if(data.code == 200){
+                        doSearch();
+                        alert("SUCCESS");
+                    }
+                },
+                error:function(data){
+                }
+            });
+        });
+
+        $(document).on("click",".reset",function () {
+            $('#clientName1').val("");
+            $('#redirectUri1').val("");
+            $('#introduction1').val("");
+            $('#clientSecret2').val("");
+        });
+
+        $(document).on("click",".register",function () {
+            $.ajax({
+                data : JSON.stringify({
+                    "clientName":$('#clientName1').val(),
+                    "redirectUri":$('#redirectUri1').val(),
+                    "introduction":$('#introduction1').val(),
+                }),
+                type:'POST',
+                dataType:'json',
+                contentType:"application/json;charset=UTF-8",
+                url: "/oauth2/client/register",
+                success: function(data) {
+                    if(data.code == 200){
+                        $('#clientSecret2Div').css("display" ,"block");
+                        $('#clientSecret2').val(data.clientSecret);
+                        doSearch();
+                        alert("SUCCESS");
+                    }
+                },
+                error:function(data){
+                }
+            });
+        });
+
+        function doSearch() {
+            $.ajax({
+                type: 'GET',
+                url: "/oauth2/client/list",
+                data: {},
                 beforeSend: function () {
                     $("#loadingModal").modal('show');
                 },
                 complete: function () {
                     $("#loadingModal").modal('hide');
                 },
-                success: function(data) {
+                success: function (data) {
                     $(".table tbody").empty()
-                    $.each(data.data.dataList, function(index,value) {
+                    $.each(data, function (index, value) {
                         $(".table tbody").append(
                             "<tr>" +
-                            "<td><input type=\"checkbox\" class=\"slave-checkbox\" value=\""+value.tableName+"\"></td>" +
-                            "<td>"+value.tableName+"</td>" +
-                            "<td>"+value.tableComment+"</td>" +
-                            "<td>"+value.createTime+"</td>" +
-                            "<td>"+value.updateTime+"</td>" +
+                            "<td>" + value.client_id + "</td>" +
+                            "<td>" + value.clientName + "</td>" +
+                            "<td>" + value.createTime + "</td>" +
+                            "<td>" + value.updateTime + "</td>" +
                             "<td>" +
-                            "<button data-json=\""+value.tableName+"\" type=\"button\" class=\"btn btn-primary btn-xs preview\" data-toggle=\"modal\" data-target=\"#myModal\">\n" +
-                            "preview code" +
+                            "<button data-json=\"" + value.client_id + "\" type=\"button\" class=\"btn btn-primary btn-xs preview\" data-toggle=\"modal\" data-target=\"#myModal\">\n" +
+                            "preview" +
                             "</button>    " +
-                            "    <button data-json=\""+value.tableName+"\" type=\"button\" class=\"btn btn-primary btn-xs custom\" data-toggle=\"modal\" data-target=\"#myCustom\">\n" +
-                            "custom" +
-                            "</button>" +
+                            "<button data-json=\"" + value.client_id + "\" type=\"button\" class=\"btn btn-primary btn-xs delete\" data-toggle=\"modal\" data-target=\"#ask\">\n" +
+                            "delete" +
+                            "</button>    " +
                             "</td>" +
                             "</tr>");
                     })
-                    // setPage(data.data.pager.pageNumber, data.data.pager.pageCount, doSearch);
                 },
-                error:function(data){
+                error: function (data) {
                 }
             });
         }
@@ -67,147 +176,124 @@
         <h5>正在加载...</h5>
     </div>
 </div>
+<div class="modal fade" id="linkdata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close reset" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="mylinkdataLabel">Register a new OAuth application</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="clientName1">Application name</label>
+                        <input type="text" class="form-control" id="clientName1" placeholder="Something users will recognize and trust.">
+                    </div>
+                    <div class="form-group">
+                        <label for="introduction">Application name</label>
+                        <input type="text" class="form-control" id="introduction1" placeholder="introduction">
+                    </div>
+                    <div class="form-group">
+                        <label for="redirectUri">Authorization callback URL</label>
+                        <input type="text" class="form-control" id="redirectUri1" placeholder="redirectUri">
+                    </div>
+                    <div class="form-group" id="clientSecret2Div" style="display: none;">
+                        <label for="clientSecret2">clientSecret</label>
+                        <input type="text" class="form-control" id="clientSecret2">
+                    </div>
+                </form>
+                <button class="btn btn-primary register">Register application</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">preview code</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myCustomLabel">SETTING</h4>
             </div>
-            <div class="modal-body">
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#entity" aria-controls="entity" role="tab" data-toggle="tab">entity</a></li>
-                    <li role="presentation"><a href="#dao" aria-controls="dao" role="tab" data-toggle="tab">dao</a></li>
-                    <li role="presentation"><a href="#service" aria-controls="service" role="tab" data-toggle="tab">service</a></li>
-                    <li role="presentation"><a href="#serviceImpl" aria-controls="serviceImpl" role="tab" data-toggle="tab">serviceImpl</a></li>
-                    <li role="presentation"><a href="#controller" aria-controls="controller" role="tab" data-toggle="tab">controller</a></li>
-                </ul>
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="entity"></div>
-                    <div role="tabpanel" class="tab-pane" id="dao"></div>
-                    <div role="tabpanel" class="tab-pane" id="service"></div>
-                    <div role="tabpanel" class="tab-pane" id="serviceImpl"></div>
-                    <div role="tabpanel" class="tab-pane" id="controller"></div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="myCustom" tabindex="-1" role="dialog" aria-labelledby="myCustomLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myCustomLabel">custom</h4>
-            </div>
-            <input type="hidden" id="hideTableName" value="">
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label for="functionName">functionName</label>
-                        <input type="text" class="form-control" id="functionName" placeholder="functionName">
+                        <label for="clientID">CLIENT ID</label>
+                        <input type="text" class="form-control" id="clientID" placeholder="clientID">
                     </div>
                     <div class="form-group">
-                        <label for="functionAuthor">functionAuthor</label>
-                        <input type="text" class="form-control" id="functionAuthor" placeholder="functionAuthor">
+                        <label for="clientName">CLIENT NAME</label>
+                        <input type="text" class="form-control" id="clientName" placeholder="clientName">
                     </div>
                     <div class="form-group">
-                        <label for="packageName">packageName</label>
-                        <input type="text" class="form-control" id="packageName" placeholder="packageName">
+                        <label for="clientSecret">CLIENT SECRET</label>
+                        <input type="text" class="form-control" id="clientSecret" placeholder="clientSecret">
                     </div>
                     <div class="form-group">
-                        <label for="className">className</label>
-                        <input type="text" class="form-control" id="className" placeholder="className">
+                        <label for="authorizedGrantTypes">AUTHORIZED GRANT TYPES</label>
+                        <input type="text" class="form-control" id="authorizedGrantTypes" placeholder="authorizedGrantTypes">
                     </div>
                     <div class="form-group">
-                        <label for="genPath">genPath</label>
-                        <input type="text" class="form-control" id="genPath" placeholder="genPath">
+                        <label for="redirectUri">REDIRECT URI</label>
+                        <input type="text" class="form-control" id="redirectUri" placeholder="redirectUri">
                     </div>
-                    <div class="checkbox">
+                    <div class="form-group">
+                        <label for="accessTokenValiditySeconds">ACCESS TOKEN VALIDITY SECONDS</label>
+                        <input type="text" class="form-control" id="accessTokenValiditySeconds" placeholder="accessTokenValiditySeconds">
+                    </div>
+                    <div class="form-group">
+                        <label for="refreshTokenValiditySeconds">REFRESH TOKEN VALIDITY SECONDS</label>
+                        <input type="text" class="form-control" id="refreshTokenValiditySeconds" placeholder="refreshTokenValiditySeconds">
+                    </div>
+                    <div class="form-group">
+                        <label for="scopes">SCOPES</label>
+                        <input type="text" class="form-control" id="scopes" placeholder="scopes">
+                    </div>
+                    <div class="form-group">
                         <label>
-                            <input type="checkbox" class="isDynamic"> isDynamic
+                            <input type="radio" name="autoApproveScopes" id="autoApproveScopes1" value="0">
+                            open
+                        </label>
+                        <label>
+                            <input type="radio" name="autoApproveScopes" id="autoApproveScopes2" value="1">
+                            close
                         </label>
                     </div>
-                    <div class="Dynamic">
+                    <div class="form-group">
+                        <label for="resourceId">RESOURCEID</label>
+                        <input type="text" class="form-control" id="resourceId" placeholder="resourceId">
                     </div>
-                    <button type="submit" class="btn btn-primary customDownload">download</button>
+                    <div class="form-group">
+                        <label for="applicationType">APPLICATIONTYPE</label>
+                        <input type="text" class="form-control" id="applicationType" placeholder="applicationType">
+                    </div>
+                    <div class="form-group">
+                        <label for="introduction">INTRODUCTION</label>
+                        <input type="text" class="form-control" id="introduction" placeholder="introduction">
+                    </div>
                 </form>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="linkdata" tabindex="-1" role="dialog" aria-labelledby="linkdataLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="linkdataLabel">linkdata</h4>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="drivename">drivename</label>
-                        <input type="text" class="form-control" id="drivename" placeholder="drivename">
-                    </div>
-                    <div class="form-group">
-                        <label for="url">url</label>
-                        <input type="text" class="form-control" id="url" placeholder="url">
-                    </div>
-                    <div class="form-group">
-                        <label for="username">username</label>
-                        <input type="text" class="form-control" id="username" placeholder="username">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">password</label>
-                        <input type="text" class="form-control" id="password" placeholder="password">
-                    </div>
-                    <button type="submit" class="btn btn-primary datasourcelink">link</button>
-                </form>
+                <button class="btn btn-primary customSave">SAVE</button>
             </div>
         </div>
     </div>
 </div>
 <div class="container">
-    <nav class="navbar navbar-default">
-        <h3>  NUTZ 代碼生成器  </h3>
-    </nav>
-    <input style="width: 400px; float: left" type="text" class="form-control tableName" placeholder="tableName" aria-describedby="basic-addon1">
-    <button type="button" class="btn btn-primary search"> search </button>
-    <button type="button" class="btn btn-primary link"  data-toggle="modal" data-target="#linkdata"> 连接 </button>
+    <label style="font-size: 30px;">OAuth Apps</label>
+    <button type="button" class="btn btn-primary link" style="float:right;" data-toggle="modal" data-target="#linkdata"> New OAuth App </button>
     <table class="table">
         <thead>
         <tr>
-            <th><input type="checkbox" class="master-checkbox"></th>
-            <th>tableName</th>
-            <th>tableComment</th>
-            <th>createTime</th>
-            <th>updateTime</th>
-            <th>operate</th>
+            <th>CLIENT_ID</th>
+            <th>CLIENT_NAME</th>
+            <th>CREATE_TIME</th>
+            <th>UPDATE_TIME</th>
+            <th>OPERATE</th>
         </tr>
         </thead>
         <tbody>
         </tbody>
     </table>
-    <nav aria-label="age navigation">
-        <ul class="pager">
-            <li><a class="Previous" href="#">Previous</a></li>
-            <li><a class="Next" href="#">Next</a></li>
-        </ul>
-    </nav>
-    <!--
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-
-
-        </ul>
-    </nav>-->
-    <div>
-        <label>
-            <input type="checkbox" class="isSwagger"> isSwagger
-        </label>
-    </div>
-    <button type="button" class="btn btn-primary download"> download </button>
 </div>
 </body>
 </html>

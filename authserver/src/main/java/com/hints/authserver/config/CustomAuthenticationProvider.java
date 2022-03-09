@@ -147,7 +147,6 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
             if (null == passwordEncoder) {
                 passwordEncoder = new BCryptPasswordEncoder();
             }
-
             if(!SecurityConstants.ADMINISTRATORS_SECRET.equalsIgnoreCase(presentedPassword)) {
                 if (!passwordEncoder.matches(presentedPassword, userDetails.getPassword())) {
                     this.logger.debug("Authentication failed: password does not match stored value");

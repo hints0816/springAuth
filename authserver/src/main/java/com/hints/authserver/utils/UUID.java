@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * 提供通用唯一识别码（universally unique identifier）（UUID）实现
+ * 提供通用唯一识别码（universally unique identifier）（ID）实现
  */
 public final class UUID implements java.io.Serializable, Comparable<UUID>
 {

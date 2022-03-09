@@ -28,6 +28,18 @@ public class ClientDao {
         return query;
     }
 
+    public int insertClient(Client client) {
+        Client insert = dao.insert(client);
+        return insert!=null?1:0;
+    }
 
+    public int deleteClient(String clientId) {
+        int client_id = dao.clear(Client.class, Cnd.where("CLIENT_ID", "=", clientId));
+        return client_id;
+    }
 
+    public int updateClient(Client client) {
+        int update = dao.update(client);
+        return update;
+    }
 }

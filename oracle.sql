@@ -12,7 +12,9 @@ create table SYS_CLIENT
   CLIENT_NAME                    VARCHAR2(10),
   APPLICATION_TYPE               VARCHAR2(10),
   INTRODUCTION                   VARCHAR2(10),
-  AUTO_APPROVE_SCOPES            VARCHAR2(50)
+  AUTO_APPROVE_SCOPES            VARCHAR2(50),
+  CREATE_TIME                    DATE,
+  UPDATE_TIME                    DATE
 )
 tablespace CMDB
   pctfree 10

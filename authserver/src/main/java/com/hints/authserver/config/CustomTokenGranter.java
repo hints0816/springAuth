@@ -33,6 +33,7 @@ public class CustomTokenGranter extends AbstractTokenGranter {
 
     /**
      * 在这个方法可以进行验证码等其他操作
+     *
      * @param client
      * @param tokenRequest
      * @return
@@ -41,19 +42,19 @@ public class CustomTokenGranter extends AbstractTokenGranter {
     protected OAuth2Authentication getOAuth2Authentication(ClientDetails client, TokenRequest tokenRequest) {
 
         Map<String, String> parameters = new LinkedHashMap(tokenRequest.getRequestParameters());
-        String username = (String)parameters.get("username");
-        String password = (String)parameters.get("password");
+        String username = (String) parameters.get("username");
+        String password = (String) parameters.get("password");
         try {
             password = new String(parameters.get("password").getBytes("ISO8859-1"), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        String comp = (String)parameters.get("comp");
+        String comp = (String) parameters.get("comp");
         parameters.remove("password");
         parameters.remove("comp");
 
-        Authentication userAuth = new CustomizeUsernamePasswordAuthenticationToken(username, password,comp);
-        ((AbstractAuthenticationToken)userAuth).setDetails(parameters);
+        Authentication userAuth = new CustomizeUsernamePasswordAuthenticationToken(username, password, comp);
+        ((AbstractAuthenticationToken) userAuth).setDetails(parameters);
         try {
             userAuth = this.authenticationManager.authenticate(userAuth);
         } catch (AccountStatusException var8) {

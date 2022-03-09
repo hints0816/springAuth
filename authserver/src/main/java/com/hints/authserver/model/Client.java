@@ -5,6 +5,8 @@ import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Name;
 import org.nutz.dao.entity.annotation.Table;
 
+import java.time.LocalDateTime;
+
 @Data
 @Table("sys_client")
 public class Client {
@@ -79,4 +81,16 @@ public class Client {
      */
     @Column(hump = true)
     private String introduction;
+
+    /**
+     * 资源id
+     */
+    @Column(hump = true)
+    private LocalDateTime createTime;
+
+    /**
+     * 资源id
+     */
+    @Column(hump = true)
+    private LocalDateTime updateTime;
 }
